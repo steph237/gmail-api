@@ -1,24 +1,46 @@
 import "./App.css";
 import React from "react";
 import "tailwindcss/tailwind.css";
+import { useEffect, useState } from "react";
+// import axios from "axios";
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: "",
-      email: "",
-      message: "",
-    };
-  }
+function App() {
+  const [error, setError] = useState(null);
+  const [isLoaded, setLoaded] = useState(false);
+  const [items, setItems] = useState([]);
 
-  render() {
+  useEffect(() => {
+    fetch(
+      "https://api.unsplash.com/photos/?client_id=xz10U--DxnmCZryuKrhMDSYtONRRPAOqu7ar9jiBHts"
+    )
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          setItems(result);
+        },
+        (error) => {
+          setLoaded(true);
+          setError(error);
+        }
+      );
+  }, []);
+
+  if (error) {
+    return <div> Error : {error.message}</div>;
+  } else if (isLoaded) {
+    return <div> laoding....</div>;
+  } else {
     return (
       <div className="main mx-10">
         <h1 className="text-4xl font-bold text-blue-700 mt-6 p-8">
           {" "}
           Send Batch Emails{" "}
         </h1>
+        <ul>
+          {items.map((item) => (
+            <li key={item.id}>Username: {item.likes}</li>
+          ))}
+        </ul>
         <div div className="App p-10">
           <div className="app-image">
             <p className="text-red-700">great</p>
@@ -70,7 +92,7 @@ class App extends React.Component {
               <div className="flex justify-end py-4">
                 <button
                   type="submit"
-                  class="bg-blue-700 text-white font-bold py-2 px-4 rounded focus:ring focus:ring-blue-300 hover:bg-blue-500"
+                  className="bg-blue-700 text-white font-bold py-2 px-4 rounded focus:ring focus:ring-blue-300 hover:bg-blue-500"
                 >
                   Submit
                 </button>
@@ -81,20 +103,6 @@ class App extends React.Component {
       </div>
     );
   }
-
-  onNameChange(event) {
-    this.setState({ name: event.target.value });
-  }
-
-  onEmailChange(event) {
-    this.setState({ email: event.target.value });
-  }
-
-  onMessageChange(event) {
-    this.setState({ message: event.target.value });
-  }
-
-  handleSubmit(event) {}
 }
 
 export default App;
