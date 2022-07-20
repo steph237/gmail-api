@@ -4,7 +4,7 @@ import SimpleImageSlider from "react-simple-image-slider";
 
 export default function GetImages() {
   const [images, setImages] = useState([]);
-  const [img, setImg] = useState();
+  const [img, setImg] = useState([]);
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -24,14 +24,16 @@ export default function GetImages() {
     images.forEach((image) => {
       let url = image.urls.raw;
 
-      // console.log(url);
+      // console.log(urldata );
 
       let imgObj = { url: url };
-      setImg(img.push(imgObj));
+      img.push(imgObj);
     });
   };
 
-  console.log(imageList());
+  imageList();
+
+  console.log(img);
 
   // const newImages = [
   //   {
@@ -58,12 +60,12 @@ export default function GetImages() {
           </div> */}
           <div className="slider">
             <SimpleImageSlider
-              width={896}
-              height={504}
+              width={500}
+              height={500}
               images={img}
-              showNavs={true}
+              // showNavs={true}
               autoPlay={true}
-              autoPlayDelay={1.0}
+              autoPlayDelay={5.0}
             />
           </div>
         </section>
